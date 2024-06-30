@@ -1,0 +1,21 @@
+server:
+  port: 9100  #后期微服务多实例，端口号依次递增（一般10个以内）
+spring:
+  application:
+    name: luohao-service-page  #定义该微服务在整个微服务中的唯一标识为luohao-service-page
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springcloudcase1?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+eureka: #将静态页面微服务注册到eureka注册中心
+  client:
+    service-url:
+      # 仅管在同一个集群环境下butongdeEureka在启动过后会通过复制的方法将数据同步到每一个Eureka，但是为了保证的高可用性，我们不会采用将所有的服务都注册到同一个Eureka Server上，而是选择采用将多个服务注册到各个不同的Eureka Server上，采用,分隔即可
+      defaultZone: http://LuohaoCloudEurekaServerA:9200/eureka,http://LuohaoCloudEurekaServerB:9201/eureka
+  instance:
+    #    使用ip注册,否则会使用主机名注册（考虑老版本的兼容性问题，新版本都是采用ip注册）
+    prefer-ip-address: true
+    #自定义实例显示格式，加上版本号，便于多版本管理，注意是ip-address，早期版本是ipAddress
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@

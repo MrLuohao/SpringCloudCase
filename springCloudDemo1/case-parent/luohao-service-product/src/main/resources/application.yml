@@ -1,0 +1,20 @@
+server:
+  port: 9000  #微服务的集群环境中，通常会为每一个微服务叠加端口号。
+spring:
+  application:
+    name: luohao-service-product  #定义项目名称，在微服务架构中的唯一标识，要求见名知意
+  datasource: #配置数据库连接源信息
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springcloudcase1?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+eureka: #将商品微服务注册到eureka注册中心
+  client:
+    service-url:
+      defaultZone: http://LuohaoCloudEurekaServerA:9200/eureka,http://LuohaoCloudEurekaServerB:9201/eureka
+  instance:
+    #    使用ip注册,否则会使用主机名注册（考虑老版本的兼容性问题，新版本都是采用ip注册）
+    prefer-ip-address: true
+    #自定义实例显示格式，加上版本号，便于多版本管理，注意是ip-address，早期版本是ipAddress
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@

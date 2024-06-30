@@ -1,0 +1,17 @@
+server:
+  port: 9201
+spring:
+  application:
+    name: luohao-cloud-eureka
+eureka:
+  client:   #Eureka server本身也是client，因为在集群环境下需要与其它Eureka Server进行数据交互同步
+    service-url:
+      defaultZone: http://LuohaoCloudEurekaServerA:9200/eureka   #定义Eureka Server url
+    register-with-eureka: true  #表示向Eureka Server注册自己的信息，因为自己就是Eureka Server所以不需要注册   默认为true
+    fetch-registry: true   #表示拉去Eureka Server注册列表,默认为true
+  instance:
+    #    使用ip注册,否则会使用主机名注册（考虑老版本的兼容性问题，新版本都是采用ip注册）
+    prefer-ip-address: true
+    #自定义实例显示格式，加上版本号，便于多版本管理，注意是ip-address，早期版本是ipAddress
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
+

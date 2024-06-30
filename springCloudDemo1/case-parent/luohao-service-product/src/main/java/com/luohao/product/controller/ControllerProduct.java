@@ -21,6 +21,7 @@ public class ControllerProduct {
     @GetMapping("/query/{id}") //restful编程风格
     public Products QueryById(@PathVariable Integer id) {  //将请求参数的id映射到方法的参数上
         //github分支新内容拉取
+        System.out.println("github分支新内容拉取");
         return productService.QueryById(id);
     }
 }
